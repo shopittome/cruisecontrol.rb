@@ -2,10 +2,12 @@
 class BuildMailer < ActionMailer::Base
 
   def build_report(build, recipients, from, subject, message, sent_at = Time.now)
+    parsed_build_log = BuildLogParser.new(build.build_log.read)
     @subject             = "[CruiseControl] #{subject}"
     @build               = build
     @message             = message
-    @failures_and_errors = BuildLogParser.new(build.output).failures_and_errors.map { |e| formatted_error(e) }     
+    @failures_and_errors = parsed_build_log.failures_and_errors.map { |e| formatted_error(e) }
+    @summary              = parsed_build_log.summary
     @recipients          = recipients
     @from                = from
     @sent_on             = sent_at
@@ -17,7 +19,7 @@ class BuildMailer < ActionMailer::Base
     @subject             = "[CruiseControl][ReleaseNote] #{subject}"
     @build               = build
     @message             = message
-    @failures_and_errors = BuildLogParser.new(build.output).failures_and_errors.map { |e| formatted_error(e) }     
+    @failures_and_errors = BuildLogParser.new(build.output).failures_and_errors.map { |e| formatted_error(e) }
     @recipients          = recipients
     @from                = from
     @sent_on             = sent_at

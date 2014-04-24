@@ -32,6 +32,10 @@ class BuildLogParser
     return test_errors
   end
 
+  def summary
+    @log.split("\n").grep(/^RUNNING:|tests,.*skips$/)
+  end
+
   def rspec_errors
     errors = []
     [@log.split(/\d+\)/)[1..-1]].compact.flatten.each do |issue_content|

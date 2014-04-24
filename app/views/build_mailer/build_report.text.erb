@@ -5,10 +5,15 @@ CHANGES
 -------
 <%= raw @build.changeset %>
 
+SUMMARY
+-------
+<%= @summary.join("\n") %>
+
+
 <% unless @failures_and_errors.empty? -%>
 TEST FAILURES AND ERRORS
 -----------------------
-<%= @failures_and_errors %>
+<%= @failures_and_errors.join("\n") %>
 
 <% end -%>
 See <%= "#{@build.url}" %> for details.
