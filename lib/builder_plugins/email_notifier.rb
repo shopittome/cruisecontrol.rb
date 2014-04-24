@@ -41,6 +41,11 @@ class EmailNotifier < BuilderPlugin
     return if @emails.empty? or not build.failed?
     email :build_report, build, "#{build.project.name} build #{build.abbreviated_label} failed",
           "The build failed."
+
+    return if @emails.empty?
+    status = build.failed? ? "failed" : "passed"
+    email :build_report, build, "#{build.project.name} build #{build.abbreviated_label} #{status}",
+          "The build #{status}."          
   end
 
   def release_note_generated(build , message , email = nil)
