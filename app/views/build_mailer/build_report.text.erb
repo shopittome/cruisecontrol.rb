@@ -1,4 +1,3 @@
-<% if CruiseControl::Configuration.dashboard_url -%>
 <%= @message %>
 
 CHANGES
@@ -20,4 +19,4 @@ View <%= link_to "the full log", build_artifact_path(:project => @build.project.
 PROJECT SETTINGS
 ----------------
 <%= raw @build.project_settings %>
-<% end %>
+
