@@ -9,22 +9,11 @@ SUMMARY
 -------
 <%= @summary.join("\n") %>
 
-
-<% unless @failures_and_errors.empty? -%>
 TEST FAILURES AND ERRORS
 -----------------------
 <%= @failures_and_errors.join("\n") %>
 
-<% end -%>
-See <%= "#{@build.url}" %> for details.
-<% else -%>
-<%= @message %>
-
-  Note: if you set CruiseControl::Configuration.dashboard_url in site_config.rb, you'd see a link to the build page here.
-
-CHANGES
--------
-<%= raw @build.changeset %>
+Note: if you set CruiseControl::Configuration.dashboard_url in site_config.rb, you'd see a link to the build page here.
 
 BUILD LOG
 ---------
