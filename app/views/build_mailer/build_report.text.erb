@@ -1,4 +1,3 @@
-<% if CruiseControl::Configuration.dashboard_url -%>
 <%= @message %>
 
 CHANGES
@@ -13,18 +12,10 @@ TEST FAILURES AND ERRORS
 -----------------------
 <%= @failures_and_errors.join("\n") %>
 
-Note: if you set CruiseControl::Configuration.dashboard_url in site_config.rb, you'd see a link to the build page here.
-
 BUILD LOG
 ---------
-<% if false || @build.output_exceeds_max_file_display_length? %>
-The output below has been truncated to <%= number_to_human_size(CruiseControl::Configuration.max_file_display_length) %>.
 View <%= link_to "the full log", build_artifact_path(:project => @build.project.name, :build => @build.label, :path => 'build.log') %> for the rest.
-<% end %>
-
-<%# raw @build.output %>
 
 PROJECT SETTINGS
 ----------------
 <%= raw @build.project_settings %>
-<% end -%>
