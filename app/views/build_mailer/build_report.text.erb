@@ -1,3 +1,4 @@
+<% if CruiseControl::Configuration.dashboard_url -%>
 <%= @message %>
 
 CHANGES
@@ -9,7 +10,7 @@ SUMMARY
 <%= @summary.join("\n") %>
 
 TEST FAILURES AND ERRORS
------------------------
+------------------------
 <%= @failures_and_errors.join("\n") %>
 
 BUILD LOG
@@ -19,3 +20,4 @@ View <%= link_to "the full log", build_artifact_path(:project => @build.project.
 PROJECT SETTINGS
 ----------------
 <%= raw @build.project_settings %>
+<% end %>
