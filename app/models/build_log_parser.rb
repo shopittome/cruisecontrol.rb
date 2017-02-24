@@ -4,16 +4,15 @@ class BuildLogParser
 
   TEST_ERROR_REGEX = /^\s+\d+\) Error:\n(.*):\n(.*)\n([\s\S]*?)\n\n/
   TEST_FAILURE_REGEX = /^Failure:([\S\s]*?)==/
-  TEST_FAILURE2_REGEX = /^\s+\d+\) Failure:\n(.*):\n(.*)\n([\s\S]*?)\n\n/
+  TEST_FAILURE2_REGEX = /^\s+\d+\) Failure:\n(.*)\n/
 
   TEST_NAME_REGEX = /\S+/
 
   MESSAGE_REGEX = /\: ([\s\S]+)/
   STACK_TRACE_REGEX = /\: [\s\S]+\n(.*)\n/
 
-  MESSAGE2_REGEX = /\]\:\n([\s\S]+)/
+  MESSAGE2_REGEX = /([\s\S]+)\[/
   STACK_TRACE2_REGEX = /\[([\s\S]*?)\]\:/
-
 
   def initialize(log)
     @log = log

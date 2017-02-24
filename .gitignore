@@ -58,3 +58,4 @@ config/ccrb.properties
 reports
 config/thin.yml
 
+.byebug_history
