@@ -4,10 +4,16 @@ class BuildLogParser
 
   TEST_ERROR_REGEX = /^\s+\d+\) Error:\n(.*):\n(.*)\n([\s\S]*?)\n\n/
   TEST_FAILURE_REGEX = /^Failure:([\S\s]*?)==/
+  TEST_FAILURE2_REGEX = /^\s+\d+\) Failure:\n(.*):\n(.*)\n([\s\S]*?)\n\n/
 
   TEST_NAME_REGEX = /\S+/
+
   MESSAGE_REGEX = /\: ([\s\S]+)/
   STACK_TRACE_REGEX = /\: [\s\S]+\n(.*)\n/
+
+  MESSAGE2_REGEX = /\]\:\n([\s\S]+)/
+  STACK_TRACE2_REGEX = /\[([\s\S]*?)\]\:/
+
 
   def initialize(log)
     @log = log
@@ -48,7 +54,18 @@ class BuildLogParser
         test_failures << TestErrorEntry.create_failure(test_name, message, stack_trace)
 
         # Do Nothing, Pattern does not match
+    end
 
+    @log.scan(TEST_FAILURE2_REGEX) do |text|
+      content = $1
+
+        test_name = content.match(TEST_NAME_REGEX).to_s
+        message = content.match(MESSAGE2_REGEX)[1]
+        stack_trace = content.match(STACK_TRACE2_REGEX)[1]
+
+        test_failures << TestErrorEntry.create_failure(test_name, message, stack_trace)
+
+        # Do Nothing, Pattern does not match
     end
 
     test_failures
