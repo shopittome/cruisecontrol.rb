@@ -3,14 +3,16 @@
 class BuildLogParser
 
   TEST_ERROR_REGEX = /^\s+\d+\) Error:\n(.*):\n(.*)\n([\s\S]*?)\n\n/
-  TEST_FAILURE_REGEX = /^Failure:([\S\s]*?)==/
-  TEST_FAILURE2_REGEX = /^\s+\d+\) Failure:\n(.*)\n/
 
-  TEST_NAME_REGEX = /\S+/
+  TEST_NAME_REGEX = /^Failure:\n([^\s]*)/
 
+  #Rails 3 and sorta works with 4.2
+  TEST_FAILURE_REGEX = /^Failure:([\S\s]*?)=====/
   MESSAGE_REGEX = /\: ([\s\S]+)/
   STACK_TRACE_REGEX = /\: [\s\S]+\n(.*)\n/
 
+  #Rails 5.2
+  TEST_FAILURE2_REGEX = /^Failure:([\S\s]*?bin.*\:\d+)/
   MESSAGE2_REGEX = /([\s\S]+)\[/
   STACK_TRACE2_REGEX = /\[([\s\S]*?)\]\:/
 
@@ -46,9 +48,9 @@ class BuildLogParser
     @log.scan(TEST_FAILURE_REGEX) do |text|
       content = $1
 
-        test_name = content.match(TEST_NAME_REGEX).to_s
-        message = content.match(MESSAGE_REGEX)[1]
-        stack_trace = content.match(STACK_TRACE_REGEX)[1]
+        test_name = content.match(TEST_NAME_REGEX).to_s rescue "TEST_NAME_REGEX"
+        message = content.match(MESSAGE_REGEX)[1] rescue "MESSAGE_REGEX"
+        stack_trace = content.match(STACK_TRACE_REGEX)[1] rescue "STACK_TRACE_REGEX"
 
         test_failures << TestErrorEntry.create_failure(test_name, message, stack_trace)
 
@@ -58,9 +60,9 @@ class BuildLogParser
     @log.scan(TEST_FAILURE2_REGEX) do |text|
       content = $1
 
-        test_name = content.match(TEST_NAME_REGEX).to_s
-        message = content.match(MESSAGE2_REGEX)[1]
-        stack_trace = content.match(STACK_TRACE2_REGEX)[1]
+        test_name = text.match(TEST_NAME_REGEX).to_s rescue "TEST_NAME_REGEX"
+        message = text.match(MESSAGE2_REGEX)[1] rescue "MESSAGE2_REGEX"
+        stack_trace = text.match(STACK_TRACE2_REGEX)[1] rescue "STACK_TRACE2_REGEX"
 
         test_failures << TestErrorEntry.create_failure(test_name, message, stack_trace)
 
